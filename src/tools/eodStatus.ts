@@ -7,7 +7,7 @@ import { formatEodMessage } from "../utils/formatter.js";
 const eodStatusArgsSchema = z.object({
   channel: z.string().optional().describe("Slack channel name or ID (e.g., 'halo', 'engineering-team'). If not provided, uses default channel."),
   date: z.string().optional().describe("Date for the EOD status (YYYY-MM-DD format, defaults to today)"),
-  summary: z.string().optional().describe("Summary of work done. If not provided, AI will auto-generate from all workspace conversations for the day."),
+      summary: z.string().optional().describe("Summary of work done. If not provided, the tool will automatically generate a summary by reviewing all conversations in your Cursor workspace for the specified date (defaults to today). The auto-generated summary will include all work completed, issues resolved, features implemented, and code changes from all conversations."),
   pending: z.string().optional().describe("Pending items or blockers"),
   planTomorrow: z.string().optional().describe("Plan for tomorrow"),
 });
@@ -16,9 +16,9 @@ export function registerEodStatusTool(server: McpServer) {
   server.registerTool(
     "eod_status",
     {
-      title: "Send EOD Status to Slack",
+      title: "Send EOD Status to Slack (Auto-Summarize)",
       description:
-        "Send an end-of-day status update to a Slack channel. If summary is not provided, automatically generate a concise bullet-point summary by reviewing all conversations in the workspace for the specified date (defaults to today). The summary should include all work completed, issues resolved, features implemented, and other significant activities from all conversations in the workspace for that day. Use the user's configured format template and Slack token. Supports dynamic channel selection.",
+        "Send an end-of-day status update to a Slack channel. This tool automatically summarizes all work done by reviewing ALL conversations in your Cursor workspace for the specified date (defaults to today). When called without a summary parameter, it will automatically review all your conversations and generate a comprehensive bullet-point summary of: work completed, issues resolved, features implemented, code changes made, and other significant activities. The summary is then formatted using your custom template and posted to Slack. Supports dynamic channel selection.",
       inputSchema: eodStatusArgsSchema,
     },
     async (args) => {
@@ -59,14 +59,16 @@ export function registerEodStatusTool(server: McpServer) {
       // Handle summary generation
       let summary = args.summary;
       if (!summary) {
-        // Signal to AI that it should generate summary from conversation history
-        // The AI should call generate_eod_summary tool or review conversations directly
+        // Auto-generate summary from all conversations
+        // Signal to AI that it should review all conversations and generate summary
+        const targetDate = args.date || new Date().toISOString().split("T")[0];
+        const channelSource = args.channel ? "specified channel" : config?.default_channel ? "default channel" : "environment variable";
         return {
           isError: false,
           content: [
             {
               type: "text",
-              text: `Please generate a summary of all conversations in this workspace for ${args.date || "today"}. Review all conversations and create a concise bullet-point summary of work completed, then call eod_status again with the summary parameter.`,
+              text: `🔄 Auto-generating summary from all conversations for ${targetDate}...\n\nWill send to channel: ${channel} (${channelSource})\n\nPlease review ALL conversations in this Cursor workspace for ${targetDate} and generate a comprehensive bullet-point summary of:\n\n• Work completed\n• Issues resolved\n• Features implemented\n• Code changes made\n• Bugs fixed\n• Tests written\n• Documentation updated\n• Any other significant activities\n\nAfter generating the summary, please call eod_status again with the summary parameter to send it to Slack. The channel will automatically be set to "${channel}" (you don't need to specify it). The summary should be concise but comprehensive, covering all work-related activities from all conversations in the workspace for this date.`,
             },
           ],
         };

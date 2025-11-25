@@ -9,9 +9,9 @@ export function registerGenerateSummaryTool(server: McpServer) {
   server.registerTool(
     "generate_eod_summary",
     {
-      title: "Generate EOD Summary",
+      title: "Auto-Generate EOD Summary from All Conversations",
       description:
-        "Generate a summary of all conversations in the workspace for a given day. This tool should be called to fetch conversation history and create a concise bullet-point summary of work done. The summary should include all conversations from the workspace for the specified date.",
+        "Automatically generate a comprehensive summary of all work done by reviewing ALL conversations in your Cursor workspace for a given day. This tool reviews all your conversations and creates a concise bullet-point summary of: work completed, issues resolved, features implemented, code changes, bugs fixed, tests written, documentation updates, and other significant activities. The summary covers all conversations from the workspace for the specified date (defaults to today).",
       inputSchema: generateSummaryArgsSchema,
     },
     async (args) => {
@@ -25,14 +25,7 @@ export function registerGenerateSummaryTool(server: McpServer) {
         content: [
           {
             type: "text",
-            text: `Please review all conversations in this workspace for ${targetDate} and generate a concise bullet-point summary of:
-- Work completed
-- Issues resolved
-- Features implemented
-- Code changes made
-- Any other significant activities
-
-Format the summary as bullet points, one per line. Be concise but comprehensive, covering all conversations from the workspace for this date.`,
+            text: `🔄 Auto-generating EOD summary from all conversations for ${targetDate}...\n\nPlease review ALL conversations in this Cursor workspace for ${targetDate} and generate a comprehensive bullet-point summary. The summary should include:\n\n• Work completed\n• Issues resolved\n• Features implemented\n• Code changes made\n• Bugs fixed\n• Tests written\n• Documentation updated\n• Code reviews completed\n• Deployments made\n• Any other significant activities\n\nFormat the summary as bullet points (one per line, starting with •). Be concise but comprehensive, covering ALL work-related activities from ALL conversations in the workspace for this date. Review every conversation to ensure nothing is missed.`,
           },
         ],
       };
