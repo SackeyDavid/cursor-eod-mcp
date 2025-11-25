@@ -25,7 +25,7 @@ export async function postToSlack(options: SlackMessageOptions): Promise<void> {
         });
         
         const foundChannel = result.channels?.find(
-          (c) => c.name === channel || c.id === channel
+          (c: { name?: string; id?: string }) => c.name === channel || c.id === channel
         );
         
         if (foundChannel?.id) {
@@ -109,11 +109,11 @@ export async function listSlackChannels(token: string): Promise<Array<{
     }
 
     return result.channels
-      .filter((channel) => channel.id && channel.name)
-      .map((channel) => ({
-        id: channel.id!,
-        name: channel.name!,
-        is_private: channel.is_private || false,
+      .filter((channel: { id?: string; name?: string }) => channel.id && channel.name)
+      .map((channel: { id: string; name: string; is_private?: boolean }) => ({
+        id: channel.id,
+        name: channel.name,
+        is_private: channel.is_private ?? false,
       }));
   } catch (error) {
     throw new Error(

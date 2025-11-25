@@ -70,10 +70,10 @@ export function registerEodStatusTool(server: McpServer) {
       try {
         // Format the message using user's template
         const formattedMessage = formatEodMessage(config.format_template, {
-          date: args.date,
+          date: args.date ?? undefined,
           summary: summary,
-          pending: args.pending,
-          planTomorrow: args.planTomorrow,
+          pending: args.pending ?? undefined,
+          planTomorrow: args.planTomorrow ?? undefined,
           workspace: configManager.getWorkspacePath(),
           channel: channel,
         });

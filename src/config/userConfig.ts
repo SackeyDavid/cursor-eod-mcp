@@ -1,5 +1,5 @@
 import { UserConfigStorage, getUserConfigStorage } from "./storage.js";
-import { UserConfig } from "./schema.js";
+import type { UserConfig } from "./schema.js";
 
 export class UserConfigManager {
   private storage: UserConfigStorage;
@@ -66,10 +66,10 @@ export class UserConfigManager {
     const existing = this.storage.getUserConfig(workspacePath);
 
     if (existing) {
-      const updated = this.storage.updateUserConfig(workspacePath, {
+        const updated = this.storage.updateUserConfig(workspacePath, {
         slack_token: config.slack_token,
-        refresh_token: config.refresh_token,
-        default_channel: config.default_channel,
+        refresh_token: config.refresh_token ?? null,
+        default_channel: config.default_channel ?? null,
         format_template: config.format_template,
       });
       return updated!;
@@ -77,8 +77,8 @@ export class UserConfigManager {
       return this.storage.createUserConfig({
         workspace_path: workspacePath,
         slack_token: config.slack_token,
-        refresh_token: config.refresh_token,
-        default_channel: config.default_channel,
+        refresh_token: config.refresh_token ?? null,
+        default_channel: config.default_channel ?? null,
         format_template: config.format_template || this.getDefaultTemplate(),
       });
     }

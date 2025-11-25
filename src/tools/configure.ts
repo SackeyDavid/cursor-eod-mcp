@@ -57,13 +57,13 @@ export function registerConfigureTool(server: McpServer) {
         const config = configManager.saveConfig({
           workspace_path: workspacePath,
           slack_token: tokenValidation.token!,
-          default_channel: defaultChannel,
-          format_template: args.format_template,
+          default_channel: defaultChannel ?? undefined,
+          format_template: args.format_template ?? undefined,
         });
 
         let response = `✅ Configuration saved successfully!\n\n`;
         response += `Workspace: ${workspacePath}\n`;
-        response += `Slack Team: ${tokenValidation.team || "Unknown"}\n`;
+        response += `Slack Team: ${tokenValidation.team ?? "Unknown"}\n`;
         if (config.default_channel) {
           response += `Default Channel: ${config.default_channel}\n`;
         }

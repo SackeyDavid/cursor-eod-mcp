@@ -72,8 +72,8 @@ export async function validateAndNormalizeToken(token: string): Promise<{
   return {
     valid: true,
     token: normalizedToken,
-    team: validation.team,
-    user: validation.user,
+    team: validation.team ?? undefined,
+    user: validation.user ?? undefined,
   };
 }
 

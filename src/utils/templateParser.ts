@@ -20,7 +20,7 @@ export function parseTemplate(template: string, variables: TemplateVariables): s
   // Replace all variables in format {variable_name}
   for (const [key, value] of Object.entries(variables)) {
     const regex = new RegExp(`\\{${key}\\}`, "g");
-    result = result.replace(regex, value || "");
+    result = result.replace(regex, value ?? "");
   }
 
   // Clean up empty lines (more than 2 consecutive newlines)

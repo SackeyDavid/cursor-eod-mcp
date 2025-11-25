@@ -1,5 +1,5 @@
 import Database from "better-sqlite3";
-import { UserConfig } from "./schema.js";
+import type { UserConfig } from "./schema.js";
 import { initializeDatabase } from "./schema.js";
 import { fileURLToPath } from "url";
 import { dirname, join } from "path";

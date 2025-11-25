@@ -1,4 +1,5 @@
-import { parseTemplate, TemplateVariables } from "./templateParser.js";
+import { parseTemplate } from "./templateParser.js";
+import type { TemplateVariables } from "./templateParser.js";
 
 export interface FormatOptions {
   date?: string | Date;
