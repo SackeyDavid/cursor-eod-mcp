@@ -22,23 +22,28 @@ export function registerEodStatusTool(server: McpServer) {
       inputSchema: eodStatusArgsSchema,
     },
     async (args) => {
+      console.error("[eod_status] Tool called with args:", JSON.stringify(args, null, 2));
       const configManager = new UserConfigManager();
-      const config = configManager.getCurrentUserConfig();
+      const slackToken = configManager.getSlackToken();
+      console.error("[eod_status] Token found:", slackToken ? `Yes (${slackToken.substring(0, 15)}...)` : "No");
 
-      if (!config) {
+      if (!slackToken) {
+        console.error("[eod_status] Error: No token found");
         return {
           isError: true,
           content: [
             {
               type: "text",
-              text: "Not configured. Please run the 'configure' tool first to set up your Slack integration.",
+              text: "Slack token not found. Please set SLACK_BOT_TOKEN or SLACK_TOKEN environment variable, or run the 'configure' tool to set up your Slack integration.",
             },
           ],
         };
       }
 
-      // Determine channel
-      const channel = args.channel || config.default_channel;
+      const config = configManager.getCurrentUserConfig();
+      
+      // Determine channel (from args, config, or env var)
+      const channel = args.channel || config?.default_channel || process.env.SLACK_DEFAULT_CHANNEL;
       if (!channel) {
         return {
           isError: true,
@@ -68,23 +73,43 @@ export function registerEodStatusTool(server: McpServer) {
       }
 
       try {
+        // Get format template (from config or use default)
+        const formatTemplate = config?.format_template || configManager.getDefaultTemplate();
+
         // Format the message using user's template
-        const formattedMessage = formatEodMessage(config.format_template, {
-          date: args.date ?? undefined,
+        const formatOptions: {
+          date?: string | Date;
+          summary: string;
+          pending?: string;
+          planTomorrow?: string;
+          workspace: string;
+          channel: string;
+        } = {
           summary: summary,
-          pending: args.pending ?? undefined,
-          planTomorrow: args.planTomorrow ?? undefined,
           workspace: configManager.getWorkspacePath(),
           channel: channel,
-        });
+        };
+        if (args.date) {
+          formatOptions.date = args.date;
+        }
+        if (args.pending) {
+          formatOptions.pending = args.pending;
+        }
+        if (args.planTomorrow) {
+          formatOptions.planTomorrow = args.planTomorrow;
+        }
+        const formattedMessage = formatEodMessage(formatTemplate, formatOptions);
+        console.error("[eod_status] Formatted message:", formattedMessage.substring(0, 100) + "...");
 
         // Post to Slack
+        console.error("[eod_status] Posting to Slack channel:", channel);
         await postToSlack({
-          token: config.slack_token,
+          token: slackToken,
           channel: channel,
           text: formattedMessage,
         });
 
+        console.error("[eod_status] Success! Message sent to", channel);
         return {
           content: [
             {
@@ -94,6 +119,7 @@ export function registerEodStatusTool(server: McpServer) {
           ],
         };
       } catch (error) {
+        console.error("[eod_status] Error:", error instanceof Error ? error.message : "Unknown error");
         return {
           isError: true,
           content: [

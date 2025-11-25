@@ -19,8 +19,10 @@ export function parseTemplate(template: string, variables: TemplateVariables): s
 
   // Replace all variables in format {variable_name}
   for (const [key, value] of Object.entries(variables)) {
-    const regex = new RegExp(`\\{${key}\\}`, "g");
-    result = result.replace(regex, value ?? "");
+    if (value !== undefined && value !== null) {
+      const regex = new RegExp(`\\{${key}\\}`, "g");
+      result = result.replace(regex, String(value));
+    }
   }
 
   // Clean up empty lines (more than 2 consecutive newlines)
@@ -39,7 +41,7 @@ export function extractVariables(template: string): string[] {
 
   while ((match = regex.exec(template)) !== null) {
     const varName = match[1];
-    if (!variables.includes(varName)) {
+    if (varName && !variables.includes(varName)) {
       variables.push(varName);
     }
   }

@@ -1,14 +1,13 @@
-import Database from "better-sqlite3";
 import type { UserConfig } from "./schema.js";
-import { initializeDatabase } from "./schema.js";
 import { fileURLToPath } from "url";
 import { dirname, join } from "path";
-import { mkdirSync } from "fs";
+import { mkdirSync, readFileSync, writeFileSync, existsSync } from "fs";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 // Ensure data directory exists
+// When running from dist/, go up to project root, then into data/
 const dataDir = join(__dirname, "../../data");
 try {
   mkdirSync(dataDir, { recursive: true });
@@ -16,96 +15,94 @@ try {
   // Directory might already exist
 }
 
-const dbPath = join(dataDir, "eod-mcp.db");
-let db: Database.Database | null = null;
+const dbPath = join(dataDir, "eod-mcp.json");
 
-function getDatabase(): Database.Database {
-  if (!db) {
-    db = initializeDatabase(dbPath);
+interface StorageData {
+  users: UserConfig[];
+}
+
+function loadData(): StorageData {
+  if (!existsSync(dbPath)) {
+    return { users: [] };
   }
-  return db;
+  try {
+    const content = readFileSync(dbPath, "utf-8");
+    return JSON.parse(content) as StorageData;
+  } catch (err) {
+    return { users: [] };
+  }
+}
+
+function saveData(data: StorageData): void {
+  writeFileSync(dbPath, JSON.stringify(data, null, 2), "utf-8");
 }
 
 export class UserConfigStorage {
-  private db: Database.Database;
-
-  constructor() {
-    this.db = getDatabase();
-  }
-
   getUserConfig(workspacePath: string): UserConfig | null {
-    const stmt = this.db.prepare("SELECT * FROM users WHERE workspace_path = ?");
-    const result = stmt.get(workspacePath) as UserConfig | undefined;
-    return result || null;
+    const data = loadData();
+    const user = data.users.find((u) => u.workspace_path === workspacePath);
+    return user || null;
   }
 
   createUserConfig(config: Omit<UserConfig, "id" | "created_at" | "updated_at">): UserConfig {
-    const stmt = this.db.prepare(`
-      INSERT INTO users (workspace_path, slack_token, refresh_token, default_channel, format_template)
-      VALUES (?, ?, ?, ?, ?)
-    `);
+    const data = loadData();
     
-    const result = stmt.run(
-      config.workspace_path,
-      config.slack_token,
-      config.refresh_token || null,
-      config.default_channel || null,
-      config.format_template
-    );
+    // Generate ID
+    const maxId = data.users.reduce((max, u) => Math.max(max, u.id || 0), 0);
+    const newId = maxId + 1;
+    
+    const now = new Date().toISOString();
+    const userConfig: UserConfig = {
+      id: newId,
+      workspace_path: config.workspace_path,
+      slack_token: config.slack_token,
+      refresh_token: config.refresh_token || null,
+      default_channel: config.default_channel || null,
+      format_template: config.format_template,
+      created_at: now,
+      updated_at: now,
+    };
 
-    return this.getUserConfig(config.workspace_path)!;
+    data.users.push(userConfig);
+    saveData(data);
+    return userConfig;
   }
 
   updateUserConfig(workspacePath: string, updates: Partial<Omit<UserConfig, "id" | "workspace_path" | "created_at">>): UserConfig | null {
-    const current = this.getUserConfig(workspacePath);
-    if (!current) {
+    const data = loadData();
+    const index = data.users.findIndex((u) => u.workspace_path === workspacePath);
+    
+    if (index === -1) {
       return null;
     }
 
-    const fields: string[] = [];
-    const values: unknown[] = [];
+    const current = data.users[index]!;
+    const updated: UserConfig = {
+      ...current,
+      ...updates,
+      updated_at: new Date().toISOString(),
+    };
 
-    if (updates.slack_token !== undefined) {
-      fields.push("slack_token = ?");
-      values.push(updates.slack_token);
-    }
-    if (updates.refresh_token !== undefined) {
-      fields.push("refresh_token = ?");
-      values.push(updates.refresh_token);
-    }
-    if (updates.default_channel !== undefined) {
-      fields.push("default_channel = ?");
-      values.push(updates.default_channel);
-    }
-    if (updates.format_template !== undefined) {
-      fields.push("format_template = ?");
-      values.push(updates.format_template);
-    }
-
-    if (fields.length === 0) {
-      return current;
-    }
-
-    fields.push("updated_at = datetime('now')");
-    values.push(workspacePath);
-
-    const stmt = this.db.prepare(`
-      UPDATE users SET ${fields.join(", ")} WHERE workspace_path = ?
-    `);
-    stmt.run(...values);
-
-    return this.getUserConfig(workspacePath);
+    data.users[index] = updated;
+    saveData(data);
+    return updated;
   }
 
   deleteUserConfig(workspacePath: string): boolean {
-    const stmt = this.db.prepare("DELETE FROM users WHERE workspace_path = ?");
-    const result = stmt.run(workspacePath);
-    return result.changes > 0;
+    const data = loadData();
+    const initialLength = data.users.length;
+    data.users = data.users.filter((u) => u.workspace_path !== workspacePath);
+    
+    if (data.users.length < initialLength) {
+      saveData(data);
+      return true;
+    }
+    return false;
   }
 
   getAllUserConfigs(): UserConfig[] {
-    const stmt = this.db.prepare("SELECT * FROM users");
-    return stmt.all() as UserConfig[];
+    const data = loadData();
+    return data.users;
   }
 }
 
@@ -118,4 +115,3 @@ export function getUserConfigStorage(): UserConfigStorage {
   }
   return storageInstance;
 }
-

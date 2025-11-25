@@ -54,6 +54,8 @@ export async function postToSlack(options: SlackMessageOptions): Promise<void> {
   }
 }
 
+const isLikelySlackApiToken = (token: string) => /^xox[a-zA-Z]-/.test(token);
+
 /**
  * Validate Slack token
  */
@@ -63,6 +65,13 @@ export async function validateSlackToken(token: string): Promise<{
   user?: string;
   error?: string;
 }> {
+  if (!isLikelySlackApiToken(token)) {
+    return {
+      valid: false,
+      error: "Token format looks wrong (expected Slack bot token like xoxb-...). Webhook URLs will not work for API calls."
+    };
+  }
+
   const client = new WebClient(token);
 
   try {
@@ -75,11 +84,23 @@ export async function validateSlackToken(token: string): Promise<{
       };
     }
 
-    return {
+    const response: {
+      valid: boolean;
+      team?: string;
+      user?: string;
+      error?: string;
+    } = {
       valid: true,
-      team: result.team || undefined,
-      user: result.user || undefined,
     };
+    
+    if (result.team) {
+      response.team = result.team;
+    }
+    if (result.user) {
+      response.user = result.user;
+    }
+    
+    return response;
   } catch (error) {
     return {
       valid: false,
@@ -96,6 +117,13 @@ export async function listSlackChannels(token: string): Promise<Array<{
   name: string;
   is_private: boolean;
 }>> {
+  if (!isLikelySlackApiToken(token)) {
+    const authError: any = new Error("invalid_auth");
+    authError.isAuthError = true;
+    authError.slackErrorCode = "invalid_token_format";
+    throw authError;
+  }
+
   const client = new WebClient(token);
 
   try {
@@ -109,15 +137,33 @@ export async function listSlackChannels(token: string): Promise<Array<{
     }
 
     return result.channels
-      .filter((channel: { id?: string; name?: string }) => channel.id && channel.name)
-      .map((channel: { id: string; name: string; is_private?: boolean }) => ({
-        id: channel.id,
-        name: channel.name,
+      .filter((channel) => channel.id && channel.name)
+      .map((channel) => ({
+        id: channel.id!,
+        name: channel.name!,
         is_private: channel.is_private ?? false,
       }));
-  } catch (error) {
-    throw new Error(
-      `Failed to list channels: ${error instanceof Error ? error.message : "Unknown error"}`
-    );
+  } catch (error: any) {
+    // Slack WebClient errors have a 'data' property with error details
+    if (error?.data?.error) {
+      const errorCode = error.data.error;
+      if (errorCode === 'invalid_auth' || errorCode === 'not_authed') {
+        const authError: any = new Error("invalid_auth");
+        authError.isAuthError = true;
+        authError.slackErrorCode = errorCode;
+        throw authError;
+      }
+    }
+    
+    // Check error message for auth errors
+    const errorMessage = error?.message || String(error);
+    if (errorMessage.includes("invalid_auth") || errorMessage.includes("not_authed")) {
+      const authError: any = new Error("invalid_auth");
+      authError.isAuthError = true;
+      throw authError;
+    }
+    
+    // Re-throw original error to preserve error chain
+    throw error;
   }
 }

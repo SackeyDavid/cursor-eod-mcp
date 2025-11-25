@@ -37,6 +37,39 @@ export class UserConfigManager {
   }
 
   /**
+   * Get Slack token from environment variable
+   */
+  getSlackTokenFromEnv(): string | null {
+    const token = process.env.SLACK_BOT_TOKEN || process.env.SLACK_TOKEN || null;
+    console.error("[UserConfigManager] getSlackTokenFromEnv:", token ? `Found (${token.substring(0, 15)}...)` : "Not found");
+    return token;
+  }
+
+  /**
+   * Check if Slack token is available (from env or config)
+   */
+  hasSlackToken(): boolean {
+    const envToken = this.getSlackTokenFromEnv();
+    if (envToken) {
+      return true;
+    }
+    const config = this.getCurrentUserConfig();
+    return config !== null && !!config.slack_token;
+  }
+
+  /**
+   * Get Slack token (from env var or config)
+   */
+  getSlackToken(): string | null {
+    const envToken = this.getSlackTokenFromEnv();
+    if (envToken) {
+      return envToken;
+    }
+    const config = this.getCurrentUserConfig();
+    return config?.slack_token || null;
+  }
+
+  /**
    * Get current user's config
    */
   getCurrentUserConfig(): UserConfig | null {
@@ -66,12 +99,19 @@ export class UserConfigManager {
     const existing = this.storage.getUserConfig(workspacePath);
 
     if (existing) {
-        const updated = this.storage.updateUserConfig(workspacePath, {
-        slack_token: config.slack_token,
-        refresh_token: config.refresh_token ?? null,
-        default_channel: config.default_channel ?? null,
-        format_template: config.format_template,
-      });
+        const updates: Partial<Omit<UserConfig, "id" | "workspace_path" | "created_at">> = {
+          slack_token: config.slack_token,
+        };
+        if (config.refresh_token !== undefined) {
+          updates.refresh_token = config.refresh_token ?? null;
+        }
+        if (config.default_channel !== undefined) {
+          updates.default_channel = config.default_channel ?? null;
+        }
+        if (config.format_template !== undefined) {
+          updates.format_template = config.format_template;
+        }
+        const updated = this.storage.updateUserConfig(workspacePath, updates);
       return updated!;
     } else {
       return this.storage.createUserConfig({

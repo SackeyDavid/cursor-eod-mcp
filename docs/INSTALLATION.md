@@ -42,21 +42,30 @@ npm install -g halo-eod-mcp
 ## Step 2: Configure Cursor MCP
 
 1. Open Cursor IDE
-2. Navigate to MCP settings (usually in Settings → MCP or `~/.cursor/mcp.json`)
-3. Add the server configuration:
+2. Navigate to MCP settings (Settings → MCP → Edit Config) or edit `~/cursor/mcp.json` directly
+3. Add the server configuration with your Slack token:
 
 ```json
 {
   "mcpServers": {
     "halo-eod-mcp": {
       "command": "node",
-      "args": ["/absolute/path/to/halo-eod-mcp/dist/index.js"]
+      "args": ["/absolute/path/to/halo-eod-mcp/dist/index.js"],
+      "env": {
+        "SLACK_BOT_TOKEN": "xoxb-your-token-here",
+        "SLACK_DEFAULT_CHANNEL": "general"
+      }
     }
   }
 }
 ```
 
-**Important**: Use the absolute path to `dist/index.js`, not a relative path.
+**Important**: 
+- Use the absolute path to `dist/index.js`, not a relative path
+- Replace `xoxb-your-token-here` with your actual Slack Bot Token
+- `SLACK_DEFAULT_CHANNEL` is optional - you can specify channels in commands
+
+**Alternative**: You can also set `SLACK_BOT_TOKEN` as a system environment variable instead of in the MCP config.
 
 4. Save the configuration
 5. Restart Cursor IDE
@@ -102,15 +111,18 @@ After restarting Cursor, the MCP server should be loaded. You can verify by:
 3. Click **"Copy"** to copy the token
 4. **Keep this token secure** - don't share it publicly
 
-## Step 5: Configure in Cursor
+## Step 5: Verify Configuration
 
 1. In Cursor, open a chat
-2. Type: `configure`
-3. When prompted, paste your Slack Bot Token
-4. Optionally set a default channel (e.g., `halo`)
-5. Optionally customize the format template
+2. Type: `list_channels`
+3. You should see a list of your Slack channels
 
-The configuration will be saved to your workspace.
+If you see an error, verify:
+- The `SLACK_BOT_TOKEN` is set correctly in your MCP config
+- The token has the required scopes (`chat:write`, `channels:read`, `groups:read`)
+- You've restarted Cursor after updating the config
+
+**Optional**: You can also use the `configure` tool to store settings in a JSON file instead of environment variables.
 
 ## Step 6: Test the Integration
 

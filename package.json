@@ -5,7 +5,9 @@
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc -p tsconfig.json",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node test-mcp-server.js && node test-mcp-protocol.js",
+    "test:server": "node test-mcp-server.js",
+    "test:protocol": "node test-mcp-protocol.js"
   },
   "keywords": ["mcp", "cursor", "slack", "eod", "status", "automation"],
   "author": "",
@@ -14,13 +16,11 @@
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.22.0",
     "@slack/web-api": "^7.0.0",
-    "better-sqlite3": "^9.0.0",
     "dotenv": "^17.2.3",
     "node-fetch": "^3.3.2",
     "zod": "^3.23.8"
   },
   "devDependencies": {
-    "@types/better-sqlite3": "^7.6.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.3"
   }

@@ -110,21 +110,22 @@ export function registerFormatManagerTools(server: McpServer) {
     },
     async (args) => {
       const configManager = new UserConfigManager();
-      const config = configManager.getCurrentUserConfig();
+      const slackToken = configManager.getSlackToken();
 
-      if (!config) {
+      if (!slackToken) {
         return {
           isError: true,
           content: [
             {
               type: "text",
-              text: "Not configured. Please run the 'configure' tool first to set up your Slack integration.",
+              text: "Slack token not found. Please set SLACK_BOT_TOKEN or SLACK_TOKEN environment variable, or run the 'configure' tool to set up your Slack integration.",
             },
           ],
         };
       }
 
-      const template = args.template || config.format_template;
+      const config = configManager.getCurrentUserConfig();
+      const template = args.template || config?.format_template || configManager.getDefaultTemplate();
 
       // Validate template
       const validation = validateTemplate(template);
@@ -150,7 +151,7 @@ export function registerFormatManagerTools(server: McpServer) {
           workspace: configManager.getWorkspacePath(),
           project_name: "My Project",
           user_name: "Developer",
-          channel: config.default_channel || "general",
+          channel: config?.default_channel || process.env.SLACK_DEFAULT_CHANNEL || "general",
         });
 
         let response = `Format Preview:\n\n`;

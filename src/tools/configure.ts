@@ -20,12 +20,16 @@ export function registerConfigureTool(server: McpServer) {
       inputSchema: configureArgsSchema,
     },
     async (args) => {
+      console.error("[configure] Tool called with args:", JSON.stringify({ ...args, slack_token: args.slack_token ? args.slack_token.substring(0, 15) + "..." : undefined }, null, 2));
       const configManager = new UserConfigManager();
       const workspacePath = configManager.getWorkspacePath();
+      console.error("[configure] Workspace path:", workspacePath);
 
       try {
         // Validate token
+        console.error("[configure] Validating token...");
         const tokenValidation = await validateAndNormalizeToken(args.slack_token);
+        console.error("[configure] Token validation result:", tokenValidation.valid ? "Valid" : "Invalid");
         
         if (!tokenValidation.valid) {
           return {
@@ -41,12 +45,12 @@ export function registerConfigureTool(server: McpServer) {
 
         // Get available channels if default_channel not provided
         let defaultChannel = args.default_channel;
-        if (!defaultChannel) {
+        if (!defaultChannel && tokenValidation.token) {
           try {
-            const channels = await listSlackChannels(tokenValidation.token!);
+            const channels = await listSlackChannels(tokenValidation.token);
             if (channels.length > 0) {
               // Suggest first channel
-              defaultChannel = channels[0].name;
+              defaultChannel = channels[0]?.name;
             }
           } catch (err) {
             // Continue without default channel
@@ -54,12 +58,25 @@ export function registerConfigureTool(server: McpServer) {
         }
 
         // Save configuration
-        const config = configManager.saveConfig({
+        const saveConfig: {
+          workspace_path?: string;
+          slack_token: string;
+          refresh_token?: string;
+          default_channel?: string;
+          format_template?: string;
+        } = {
           workspace_path: workspacePath,
           slack_token: tokenValidation.token!,
-          default_channel: defaultChannel ?? undefined,
-          format_template: args.format_template ?? undefined,
-        });
+        };
+        if (defaultChannel) {
+          saveConfig.default_channel = defaultChannel;
+        }
+        if (args.format_template) {
+          saveConfig.format_template = args.format_template;
+        }
+        console.error("[configure] Saving configuration...");
+        const config = configManager.saveConfig(saveConfig);
+        console.error("[configure] Configuration saved successfully!");
 
         let response = `✅ Configuration saved successfully!\n\n`;
         response += `Workspace: ${workspacePath}\n`;
@@ -78,6 +95,7 @@ export function registerConfigureTool(server: McpServer) {
           ],
         };
       } catch (error) {
+        console.error("[configure] Error:", error instanceof Error ? error.message : "Unknown error");
         return {
           isError: true,
           content: [

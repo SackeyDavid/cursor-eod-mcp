@@ -26,11 +26,12 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# Database files (for future user config storage)
+# Database files and user config storage
 *.db
 *.sqlite
 *.sqlite3
 data/
+eod-mcp.json
 
 # OAuth tokens and sensitive config
 tokens/
