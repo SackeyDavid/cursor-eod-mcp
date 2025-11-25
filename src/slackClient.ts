@@ -37,6 +37,9 @@ export async function postToSlack(options: SlackMessageOptions): Promise<void> {
       }
     }
 
+    // Post message to Slack
+    // When using a user token (xoxp-), messages automatically post as that user
+    // When using a bot token (xoxb-), messages post as the bot
     const response = await client.chat.postMessage({
       channel: channelId,
       text: text,
@@ -68,7 +71,7 @@ export async function validateSlackToken(token: string): Promise<{
   if (!isLikelySlackApiToken(token)) {
     return {
       valid: false,
-      error: "Token format looks wrong (expected Slack bot token like xoxb-...). Webhook URLs will not work for API calls."
+      error: "Token format looks wrong (expected Slack token like xoxb-... for bot or xoxp-... for user). Webhook URLs will not work for API calls."
     };
   }
 

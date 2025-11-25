@@ -5,7 +5,7 @@ import { validateAndNormalizeToken, getOAuthInstructions } from "../auth/slackOA
 import { listSlackChannels } from "../slackClient.js";
 
 const configureArgsSchema = z.object({
-  slack_token: z.string().describe("Slack Bot User OAuth Token (starts with xoxb-)"),
+  slack_token: z.string().describe("Slack OAuth Token - Use xoxp- (user token) to post as yourself, or xoxb- (bot token) to post as the app"),
   default_channel: z.string().optional().describe("Default Slack channel name or ID"),
   format_template: z.string().optional().describe("Custom format template with variables"),
 });
@@ -16,7 +16,7 @@ export function registerConfigureTool(server: McpServer) {
     {
       title: "Configure EOD MCP Server",
       description:
-        "Set up your Slack integration. Provide your Slack Bot User OAuth Token. Optionally set default channel and format template.",
+        "Set up your Slack integration. Provide your Slack OAuth Token (xoxp- for user token to post as yourself, or xoxb- for bot token to post as the app). Optionally set default channel and format template.",
       inputSchema: configureArgsSchema,
     },
     async (args) => {
@@ -78,9 +78,14 @@ export function registerConfigureTool(server: McpServer) {
         const config = configManager.saveConfig(saveConfig);
         console.error("[configure] Configuration saved successfully!");
 
+        const tokenType = tokenValidation.token?.startsWith("xoxp-") ? "User Token" : "Bot Token";
+        const postingAs = tokenValidation.token?.startsWith("xoxp-") ? "YOU" : "the app/bot";
+        
         let response = `✅ Configuration saved successfully!\n\n`;
         response += `Workspace: ${workspacePath}\n`;
         response += `Slack Team: ${tokenValidation.team ?? "Unknown"}\n`;
+        response += `Token Type: ${tokenType}\n`;
+        response += `Messages will post as: ${postingAs}\n`;
         if (config.default_channel) {
           response += `Default Channel: ${config.default_channel}\n`;
         }

@@ -24,7 +24,8 @@ export function registerEodStatusTool(server: McpServer) {
     async (args) => {
       console.error("[eod_status] Tool called with args:", JSON.stringify(args, null, 2));
       const configManager = new UserConfigManager();
-      const slackToken = configManager.getSlackToken();
+      // Prefer a user token (posts as the user) if provided, otherwise fall back to the bot token.
+      const slackToken = process.env.SLACK_USER_TOKEN || configManager.getSlackToken();
       console.error("[eod_status] Token found:", slackToken ? `Yes (${slackToken.substring(0, 15)}...)` : "No");
 
       if (!slackToken) {
@@ -135,4 +136,3 @@ export function registerEodStatusTool(server: McpServer) {
     }
   );
 }
-

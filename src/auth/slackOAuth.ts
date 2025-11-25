@@ -18,24 +18,37 @@ export function generateSlackOAuthUrl(
 export function getOAuthInstructions(): string {
   return `To connect your Slack account:
 
+**Option 1: User Token (Posts as YOU) - Recommended**
+1. Go to https://api.slack.com/apps
+2. Click "Create New App" → "From scratch"
+3. Name your app (e.g., "EOD Status")
+4. Select your workspace
+5. Go to "OAuth & Permissions" in the sidebar
+6. Under "User Token Scopes", add:
+   - chat:write
+   - channels:read
+   - groups:read
+7. Scroll up and click "Install to Workspace"
+8. Authorize the app
+9. Copy the "User OAuth Token" (starts with xoxp-)
+10. Paste it here - messages will post as YOU
+
+**Option 2: Bot Token (Posts as the app)**
 1. Go to https://api.slack.com/apps
 2. Click "Create New App" → "From scratch"
 3. Name your app (e.g., "EOD Status Bot")
 4. Select your workspace
 5. Go to "OAuth & Permissions" in the sidebar
-6. Under "Scopes", add these Bot Token Scopes:
+6. Under "Bot Token Scopes", add:
    - chat:write
    - channels:read
    - groups:read
 7. Scroll up and click "Install to Workspace"
 8. Authorize the app
 9. Copy the "Bot User OAuth Token" (starts with xoxb-)
-10. Paste it here when prompted
+10. Paste it here - messages will post as the BOT
 
-Alternatively, if you already have a Slack app:
-- Go to your app's "OAuth & Permissions" page
-- Copy the "Bot User OAuth Token"
-- Paste it here`;
+**Note:** User tokens (xoxp-) post messages as you. Bot tokens (xoxb-) post as the app.`;
 }
 
 /**
