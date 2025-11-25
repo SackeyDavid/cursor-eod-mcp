@@ -1,14 +1,14 @@
 # EOD Status MCP Server
 
-A Model Context Protocol (MCP) server for Cursor that automatically summarizes your daily work and posts end-of-day status updates to Slack channels.
+A Model Context Protocol (MCP) server for Cursor that posts end-of-day status updates to Slack channels.
 
 ## Features
 
-- 🤖 **Auto-Summarization**: AI automatically reviews all workspace conversations and generates concise bullet-point summaries
+- 🤖 **Auto-Summarization**: AI can summarize your day when you provide the summary (or wire your own source)
 - 👥 **Multi-User Support**: Each workspace has isolated configuration
 - 🎨 **Custom Format Templates**: Fully customizable message formats with Markdown support
 - 📝 **Dynamic Channels**: Send updates to any Slack channel on the fly
-- 🔐 **Secure**: OAuth-based Slack integration with per-user tokens
+- 🔐 **Manual tokens**: Quick start with bot/user tokens (no marketplace/OAuth flow required)
 
 ## Installation
 
@@ -18,111 +18,61 @@ A Model Context Protocol (MCP) server for Cursor that automatically summarizes y
 - Cursor IDE with MCP support
 - A Slack workspace where you can create apps
 
-### Install the Server
+### Install the Server (manual tokens, not published to marketplace)
 
-1. Clone or download this repository:
+1) Clone/download:
 ```bash
 git clone https://github.com/yourusername/halo-eod-mcp.git
 cd halo-eod-mcp
-```
-
-2. Install dependencies:
-```bash
 npm install
-```
-
-3. Build the project:
-```bash
 npm run build
 ```
 
-4. Set your Slack Bot Token as an environment variable:
+2) Get Slack tokens (manual method):
+- Create a Slack app at https://api.slack.com/apps → “From scratch”.
+- Add **Bot Token Scopes**: `chat:write`, `channels:read`, `groups:read`.
+- (Optional, to post as you) add **User Token Scopes**: `chat:write`, `channels:read`, `groups:read`.
+- Install/Reinstall to workspace; copy the Bot token (`xoxb-...`) and optional User token (`xoxp-...`/`xoxs-...`).
 
-```bash
-export SLACK_BOT_TOKEN="xoxb-your-token-here"
-```
-
-Or optionally set a default channel:
-```bash
-export SLACK_DEFAULT_CHANNEL="general"
-```
-
-5. Add to your Cursor MCP configuration. Edit your Cursor MCP config file at `~/cursor/mcp.json`:
-
+3) Wire Cursor MCP config (`~/.cursor/mcp.json`). Use absolute paths:
 ```json
 {
   "mcpServers": {
     "halo-eod-mcp": {
       "command": "node",
-      "args": ["/path/to/halo-eod-mcp/dist/index.js"],
+      "args": ["/absolute/path/to/halo-eod-mcp/dist/index.js"],
       "env": {
-        "SLACK_BOT_TOKEN": "xoxb-your-token-here"
+        "SLACK_BOT_TOKEN": "xoxb-your-bot-token",
+        "SLACK_USER_TOKEN": "xoxp-your-user-token (optional, for name/photo)",
+        "SLACK_DEFAULT_CHANNEL": "your-default-channel"
       }
     }
   }
 }
 ```
 
-Replace `/path/to/halo-eod-mcp` with the actual path to this project.
+4) Restart Cursor so it loads the server. Tokens stay local; do not commit them.
 
-**Note:** You can set the token either:
-- In the MCP config's `env` section (as shown above)
-- As a system environment variable (`export SLACK_BOT_TOKEN=...`)
-- Using the `configure` tool (stores in JSON file)
+## Quick Start (manual tokens)
 
-6. Restart Cursor to load the MCP server.
+1) Configure tokens (one-time, manual)
+- Via MCP config env (recommended), or
+- Via `configure` in Cursor chat:
+  ```
+  configure slack_token="xoxb-your-bot-token" default_channel="your-channel"
+  ```
+  (Optional) provide `SLACK_USER_TOKEN` in env to post with your name/photo.
 
-## Quick Start
-
-### 1. Configure Slack Integration
-
-**Option A: Using Environment Variable (Recommended)**
-
-Set the Slack Bot Token as an environment variable:
-
-```bash
-export SLACK_BOT_TOKEN="xoxb-your-token-here"
+2) Set default channel (if not set):
+```
+set_default_channel channel="your-channel"
 ```
 
-Or add it to your shell profile (`~/.zshrc`, `~/.bashrc`, etc.):
-```bash
-echo 'export SLACK_BOT_TOKEN="xoxb-your-token-here"' >> ~/.zshrc
+3) Send your first EOD:
 ```
-
-**Option B: Using Configure Tool**
-
-Alternatively, you can use the configure tool in Cursor:
-
+eod_status summary="• Did X\n• Reviewed Y\n• Shipped Z"
 ```
-configure slack_token="xoxb-your-token-here" default_channel="general"
-```
-
-**Getting Your Slack Token:**
-
-1. Create a Slack app at https://api.slack.com/apps
-2. Add Bot Token Scopes: `chat:write`, `channels:read`, `groups:read`
-3. Install the app to your workspace
-4. Copy the Bot User OAuth Token (starts with `xoxb-`)
-
-See [Slack OAuth Setup](#slack-oauth-setup) for detailed instructions.
-
-### 2. Set Default Channel (Optional)
-
-```
-set_default_channel halo
-```
-
-### 3. Send Your First EOD Update
-
-```
-eod_status halo
-```
-
-The AI will automatically:
-- Review all conversations in your workspace for today
-- Generate a concise summary
-- Format it using your template
-- Post it to the specified Slack channel
+- Optional: `pending="..."`, `planTomorrow="..."`, `channel="other-channel"`.
 
 ## Usage
 
@@ -211,26 +161,21 @@ Format templates support Markdown and variables. Available variables:
 Posted by {user_name} to #{channel}
 ```
 
-## Slack OAuth Setup
+## Slack token setup (manual, not via marketplace)
 
-1. Go to https://api.slack.com/apps
-2. Click "Create New App" → "From scratch"
-3. Name your app (e.g., "EOD Status Bot")
-4. Select your workspace
-5. Navigate to "OAuth & Permissions" in the sidebar
-6. Under "Scopes" → "Bot Token Scopes", add:
-   - `chat:write` - Send messages
-   - `channels:read` - Read public channels
-   - `groups:read` - Read private channels
-7. Scroll up and click "Install to Workspace"
-8. Authorize the app
-9. Copy the "Bot User OAuth Token" (starts with `xoxb-`)
-10. Run `configure` in Cursor and paste the token
+1. Go to https://api.slack.com/apps → “Create New App” → “From scratch”.
+2. Add Bot Token Scopes: `chat:write`, `channels:read`, `groups:read`.
+3. (Optional, to post as you) add User Token Scopes: `chat:write`, `channels:read`, `groups:read`.
+4. Install/Reinstall to workspace.
+5. Copy tokens:
+   - Bot token (`xoxb-...`) – required.
+   - User token (`xoxp-/xoxs-...`) – optional, for name/photo identity.
+6. Put tokens in MCP config env or run `configure slack_token="xoxb-..." default_channel="..."`.
 
 ## Architecture
 
 - **Database**: SQLite database stores user configurations per workspace
-- **Authentication**: Slack OAuth tokens stored securely per user
+- **Authentication**: Manual Slack tokens stored locally per workspace (no marketplace/OAuth flow needed)
 - **Templates**: Customizable format templates with variable substitution
 - **Auto-Summarization**: AI reviews workspace conversations and generates summaries
 
@@ -294,4 +239,3 @@ ISC
 - [GitHub Repository](https://github.com/yourusername/halo-eod-mcp)
 - [Cursor Marketplace](https://cursor.directory)
 - [Landing Page](https://yourusername.github.io/halo-eod-mcp)
-
