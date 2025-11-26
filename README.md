@@ -37,7 +37,12 @@ Keep tokens private. Do **not** commit them to Git.
 
 Click this link to automatically install the MCP server in Cursor:
 
-<a href="cursor://anysphere.cursor-deeplink/mcp/install?name=@techhalo/cursor-eod-mcp&config=eyJjb21tYW5kIjoibnB4IiwiYXJncyI6WyIteSIsIkB0ZWNoaGFsby9jdXJzb3ItZW9kLW1jcCJdLCJlbnYiOnsiU0xBQ0tfQk9UX1RPS0VOIjoiIiwiU0xBQ0tfVVNFUl9UT0tFTiI6IiIsIlNMQUNLX0RFRkFVTFRfQ0hBTk5FTCI6IiJ9fQ=="><img src="https://cursor.com/deeplink/mcp-install-dark.png" alt="Add @techhalo/cursor-eod-mcp MCP server to Cursor" style="max-height:32px;" /></a>
+<a href="cursor://anysphere.cursor-deeplink/mcp/install?name=@techhalo/cursor-eod-mcp&config=eyJjb21tYW5kIjoibnB4IiwiYXJncyI6WyIteSIsIkB0ZWNoaGFsby9jdXJzb3ItZW9kLW1jcCJdLCJlbnYiOnsiU0xBQ0tfQk9UX1RPS0VOIjoiIiwiU0xBQ0tfVVNFUl9UT0tFTiI6IiIsIlNMQUNLX0RFRkFVTFRfQ0hBTk5FTCI6IiJ9fQ==" target="_blank">
+<svg width="auto" height="32" viewBox="0 0 200 32" xmlns="http://www.w3.org/2000/svg">
+    <rect width="200" height="32" rx="6" fill="#1a1a1a" stroke="#333" stroke-width="1"/>
+    <text x="100" y="20" font-family="system-ui, -apple-system, sans-serif" font-size="12" fill="#fff" text-anchor="middle" font-weight="500">Add to Cursor</text>
+  </svg>
+</a>
 
 If the button doesn't work, try copying and pasting this raw link: `cursor://anysphere.cursor-deeplink/mcp/install?name=@techhalo/cursor-eod-mcp&config=eyJjb21tYW5kIjoibnB4IiwiYXJncyI6WyIteSIsIkB0ZWNoaGFsby9jdXJzb3ItZW9kLW1jcCJdLCJlbnYiOnsiU0xBQ0tfQk9UX1RPS0VOIjoiIiwiU0xBQ0tfVVNFUl9UT0tFTiI6IiIsIlNMQUNLX0RFRkFVTFRfQ0hBTk5FTCI6IiJ9fQ==`
 
