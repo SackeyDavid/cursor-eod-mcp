@@ -50,7 +50,7 @@ You should see the message appear in Slack.
 
 ## Alternative setup (clone locally)
 ```bash
-git clone <your-repo-url>
+git clone https://github.com/SackeyDavid/cursor-eod-mcp.git
 cd cursor-eod-mcp
 npm install
 npm run build
@@ -58,16 +58,20 @@ npm run build
 Then point MCP to the built file:
 ```json
 {
-  "command": "node",
-  "args": ["/absolute/path/to/cursor-eod-mcp/dist/index.js"],
-  "env": {
-    "SLACK_BOT_TOKEN": "xoxb-your-bot-token",
-    "SLACK_USER_TOKEN": "xoxp-your-user-token-or-empty",
-    "SLACK_DEFAULT_CHANNEL": "frontend-team"
+  "mcpServers": {
+    "cursor-eod-mcp": {
+      "command": "node",
+      "args": ["/absolute/path/to/cursor-eod-mcp/dist/index.js"],
+      "env": {
+        "SLACK_BOT_TOKEN": "xoxb-your-bot-token",
+        "SLACK_USER_TOKEN": "xoxp-your-user-token-or-empty",
+        "SLACK_DEFAULT_CHANNEL": "frontend-team"
+      } 
+    }
   }
 }
 ```
-Restart Cursor and test the same commands.
+Restart Cursor (or toggle off and on the cursor-eod-mcp MCP Server from Cursor's "Tools & MCP" Settings page) and test the same commands.
 
 ## Handy commands (run in Cursor chat)
 - `configure slack_token="xoxb-..." default_channel="channel"` — save tokens/channel locally.
