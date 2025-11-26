@@ -1,10 +1,19 @@
 # Cursor EOD MCP (Slack)
 
-A simple MCP server for Cursor that sends your end-of-day (EOD) updates to Slack.
+A simple MCP server that sends your end-of-day (EOD) updates to Slack.
+
+## IDE Compatibility
+
+This MCP server uses the [Model Context Protocol (MCP)](https://modelcontextprotocol.io/), an open protocol that works with IDEs that support MCP. Currently supported:
+
+- **Cursor** — Native MCP support
+- **VS Code** — MCP support via [GitHub Copilot](https://code.visualstudio.com/docs/copilot/customization/mcp-servers)
+
+The server is built on the standard MCP SDK and will work with any MCP-compatible client.
 
 ## What you need
 - Node.js 18 or newer
-- Cursor installed (MCP enabled)
+- **Cursor** (with MCP enabled) or **VS Code** (with GitHub Copilot)
 - A Slack workspace where you can create an app
 - Slack tokens:
   - Bot token (starts with `xoxb-`) — required to post
@@ -23,6 +32,17 @@ A simple MCP server for Cursor that sends your end-of-day (EOD) updates to Slack
 Keep tokens private. Do **not** commit them to Git.
 
 ## Quick setup (no cloning, use npx)
+
+### Option 1: One-click install (Cursor only)
+
+Click this link to automatically install the MCP server in Cursor:
+
+[![Add to Cursor](https://cursor.com/deeplink/mcp-install-dark.png)](cursor://anysphere.cursor-deeplink/mcp/install?name=@techhalo/cursor-eod-mcp&config=eyJAdGVjaGhhbG8vY3Vyc29yLWVvZC1tY3AiOnsiY29tbWFuZCI6Im5weCIsImFyZ3MiOlsiLXkiLCJAdGVjaGhhbG8vY3Vyc29yLWVvZC1tY3AiXX19)
+
+After installation, you'll need to add your Slack tokens to the MCP configuration. Edit `~/.cursor/mcp.json` and add the `env` section with your tokens (see Option 2 below).
+
+### Option 2: Manual setup (Cursor)
+
 1. Edit `~/.cursor/mcp.json` and add:
 ```json
 {
@@ -39,7 +59,7 @@ Keep tokens private. Do **not** commit them to Git.
   }
 }
 ```
-2. Restart Cursor so it picks up the server. Or toggle off and on the cursor-eod-mcp MCP Server from the "Tools & MCP" Settings page.
+2. Restart Cursor so it picks up the server. Or toggle off and on the cursor-eod-mcp MCP Server from the Cursor "Tools & MCP" Settings page.
 3. In Cursor chat, try:
 ```
 list_channels
@@ -48,6 +68,32 @@ eod_status summary="• Did X\n• Reviewed Y\n• Shipped Z"
 ```
 You should see the message appear in Slack.
 
+### Option 3: VS Code setup
+
+1. Open VS Code and ensure you have GitHub Copilot enabled
+2. Edit `~/.vscode/mcp.json` (or create it if it doesn't exist) and add:
+```json
+{
+  "servers": {
+    "cursor-eod-mcp": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "@techhalo/cursor-eod-mcp"],
+      "env": {
+        "SLACK_BOT_TOKEN": "xoxb-your-bot-token",
+        "SLACK_USER_TOKEN": "xoxp-your-user-token-or-empty",
+        "SLACK_DEFAULT_CHANNEL": "halo"
+      }
+    }
+  }
+}
+```
+
+**Note:** VS Code uses `servers` instead of `mcpServers` and requires `"type": "stdio"` for stdio-based servers. See the [VS Code MCP documentation](https://code.visualstudio.com/docs/copilot/customization/mcp-servers) for more details.
+
+3. Restart VS Code or reload the window
+4. Use the MCP tools in GitHub Copilot Chat
+
 ## Alternative setup (clone locally)
 ```bash
 git clone https://github.com/SackeyDavid/cursor-eod-mcp.git
@@ -55,7 +101,9 @@ cd cursor-eod-mcp
 npm install
 npm run build
 ```
-Then point MCP to the built file:
+
+### For Cursor:
+Point MCP to the built file in `~/.cursor/mcp.json`:
 ```json
 {
   "mcpServers": {
@@ -71,9 +119,29 @@ Then point MCP to the built file:
   }
 }
 ```
-Restart Cursor (or toggle off and on the cursor-eod-mcp MCP Server from Cursor's "Tools & MCP" Settings page) and test the same commands.
 
-## Handy commands (run in Cursor chat)
+### For VS Code:
+Point MCP to the built file in `~/.vscode/mcp.json`:
+```json
+{
+  "servers": {
+    "cursor-eod-mcp": {
+      "type": "stdio",
+      "command": "node",
+      "args": ["/absolute/path/to/cursor-eod-mcp/dist/index.js"], // eg. /Users/Kofi/mcps/cursor-eod-mcp/dist/index.js
+      "env": {
+        "SLACK_BOT_TOKEN": "xoxb-your-bot-token",
+        "SLACK_USER_TOKEN": "xoxp-your-user-token-or-empty",
+        "SLACK_DEFAULT_CHANNEL": "frontend-team"
+      } 
+    }
+  }
+}
+```
+
+Restart your IDE and test the same commands.
+
+## Handy commands (run in Cursor chat or VS Code Copilot Chat)
 - `configure slack_token="xoxb-..." default_channel="channel"` — save tokens/channel locally.
 - `list_channels` — see channels your token can read.
 - `set_default_channel channel="channel"` — set the default target.
@@ -88,6 +156,7 @@ Restart Cursor (or toggle off and on the cursor-eod-mcp MCP Server from Cursor's
 - Tokens stay on your machine; never commit them.
 
 ## Troubleshooting
-- Nothing posts: invite the bot/user to the channel (ie. /invite @EOD Bot); double-check tokens; restart Cursor.
+- Nothing posts: invite the bot/user to the channel (ie. for bot type /invite @EOD Bot); double-check tokens; restart your IDE.
 - `invalid_auth`: token typo or wrong type (must start with `xoxb-` or `xoxp-/xoxs-`).
 - “No channel specified”: set `SLACK_DEFAULT_CHANNEL` or run `set_default_channel`.
+- **VS Code**: Make sure GitHub Copilot is enabled and the MCP server appears in the Copilot Chat tools list. Check the MCP output log if the server isn't starting.
