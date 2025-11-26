@@ -17,8 +17,8 @@ Before installing, ensure you have:
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/halo-eod-mcp.git
-cd halo-eod-mcp
+git clone <your-repo-url>
+cd cursor-eod-mcp
 ```
 
 2. Install dependencies:

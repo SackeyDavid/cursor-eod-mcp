@@ -50,7 +50,7 @@ You should see the message appear in Slack.
 
 ## Alternative setup (clone locally)
 ```bash
-git clone https://github.com/SackeyDavid/cursor-eod-mcp.git
+git clone <your-repo-url>
 cd cursor-eod-mcp
 npm install
 npm run build
