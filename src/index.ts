@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { registerEodStatusTool } from "./tools/eodStatus.js";
@@ -8,7 +10,7 @@ import { registerGenerateSummaryTool } from "./tools/generateSummary.js";
 
 async function main() {
   const server = new McpServer({
-    name: "halo-eod-mcp",
+    name: "cursor-eod-mcp",
     version: "1.0.1"
   });
 
