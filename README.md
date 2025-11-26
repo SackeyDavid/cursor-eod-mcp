@@ -79,8 +79,8 @@ Restart Cursor (or toggle off and on the cursor-eod-mcp MCP Server from Cursor's
 - `set_default_channel channel="channel"` — set the default target.
 - `preview_format` — see the message layout.
 - `update_format_template template="*EOD ({date})*\n\n{summary}"` — change formatting.
-- `eod_status summary="• Did X\n• Fixed Y"` — send an EOD now.  
-  Optional: `pending="..."`, `planTomorrow="..."`, `channel="other-channel"`.
+- `eod_status` — send an EOD now. The MCP server automatically picks the default channel, auto-generates a summary from your Cursor workspace conversations, and sends the message.  
+  Optional parameters: `summary="• Did X\n• Fixed Y"`, `pending="..."`, `planTomorrow="..."`, `channel="other-channel"`.
 
 ## Notes
 - Bot token is enough to post; user token is only if you want your personal name/photo.
