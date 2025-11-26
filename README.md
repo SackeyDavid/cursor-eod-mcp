@@ -39,6 +39,8 @@ Click this link to automatically install the MCP server in Cursor:
 
 <a href="cursor://anysphere.cursor-deeplink/mcp/install?name=@techhalo/cursor-eod-mcp&config=eyJAdGVjaGhhbG8vY3Vyc29yLWVvZC1tY3AiOnsiY29tbWFuZCI6Im5weCIsImFyZ3MiOlsiLXkiLCJAdGVjaGhhbG8vY3Vyc29yLWVvZC1tY3AiXSwiZW52Ijp7IlNMQUNLX0JPVF9UT0tFTiI6IiIsIlNMQUNLX1VTRVJfVE9LRU4iOiIiLCJTTEFDS19ERUZBVUxUX0NIQU5ORUwiOiIifX19"><img src="https://cursor.com/deeplink/mcp-install-dark.png" alt="Add @techhalo/cursor-eod-mcp MCP server to Cursor" style="max-height:32px;" /></a>
 
+If the button doesn't work, try copying and pasting this raw link: `cursor://anysphere.cursor-deeplink/mcp/install?name=@techhalo/cursor-eod-mcp&config=eyJAdGVjaGhhbG8vY3Vyc29yLWVvZC1tY3AiOnsiY29tbWFuZCI6Im5weCIsImFyZ3MiOlsiLXkiLCJAdGVjaGhhbG8vY3Vyc29yLWVvZC1tY3AiXSwiZW52Ijp7IlNMQUNLX0JPVF9UT0tFTiI6IiIsIlNMQUNLX1VTRVJfVE9LRU4iOiIiLCJTTEFDS19ERUZBVUxUX0NIQU5ORUwiOiIifX19`
+
 After installation, edit `~/.cursor/mcp.json` and fill in your Slack tokens in the `env` section (they're pre-configured as empty strings).
 
 ### Option 2: Manual setup (Cursor)
