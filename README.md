@@ -11,7 +11,7 @@ A simple MCP server for Cursor that sends your end-of-day (EOD) updates to Slack
   - User token (starts with `xoxp-` or `xoxs-`) — optional, use if you want your own name/photo on messages
 
 ## How to get your Slack tokens (step by step)
-1. Go to https://api.slack.com/apps → **Create New App** → **From scratch**. You can call it EOD Bot.
+1. Go to https://api.slack.com/apps → **Create New App** → **From scratch**. You can call it EOD Bot. Ensure you are signed in to the desired Slack Workspace you want to post messages to.
 2. In the left menu, click **OAuth & Permissions**.
 3. Under **Bot Token Scopes**, add: `chat:write`, `channels:read`, `groups:read`.
 4. (Optional, for posting as you) under **User Token Scopes**, add: `chat:write`, `channels:read`, `groups:read`.
@@ -50,8 +50,8 @@ You should see the message appear in Slack.
 
 ## Alternative setup (clone locally)
 ```bash
-git clone https://github.com/SackeyDavid/halo-eod-mcp.git
-cd halo-eod-mcp
+git clone https://github.com/SackeyDavid/cursor-eod-mcp.git
+cd cursor-eod-mcp
 npm install
 npm run build
 ```
@@ -59,7 +59,7 @@ Then point MCP to the built file:
 ```json
 {
   "command": "node",
-  "args": ["/absolute/path/to/halo-eod-mcp/dist/index.js"],
+  "args": ["/absolute/path/to/cursor-eod-mcp/dist/index.js"],
   "env": {
     "SLACK_BOT_TOKEN": "xoxb-your-bot-token",
     "SLACK_USER_TOKEN": "xoxp-your-user-token-or-empty",
@@ -84,6 +84,6 @@ Restart Cursor and test the same commands.
 - Tokens stay on your machine; never commit them.
 
 ## Troubleshooting
-- Nothing posts: invite the bot/user to the channel; double-check tokens; restart Cursor.
+- Nothing posts: invite the bot/user to the channel (ie. /invite @EOD Bot); double-check tokens; restart Cursor.
 - `invalid_auth`: token typo or wrong type (must start with `xoxb-` or `xoxp-/xoxs-`).
 - “No channel specified”: set `SLACK_DEFAULT_CHANNEL` or run `set_default_channel`.
