@@ -61,7 +61,7 @@ Then point MCP to the built file:
   "mcpServers": {
     "cursor-eod-mcp": {
       "command": "node",
-      "args": ["/absolute/path/to/cursor-eod-mcp/dist/index.js"], // /Users/Kofi/mcps/cursor-eod-mcp/dist/index.js
+      "args": ["/absolute/path/to/cursor-eod-mcp/dist/index.js"], // eg. /Users/Kofi/mcps/cursor-eod-mcp/dist/index.js
       "env": {
         "SLACK_BOT_TOKEN": "xoxb-your-bot-token",
         "SLACK_USER_TOKEN": "xoxp-your-user-token-or-empty",
