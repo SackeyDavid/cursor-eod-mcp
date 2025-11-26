@@ -1,6 +1,6 @@
 {
   "name": "@techhalo/cursor-eod-mcp",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "MCP server for automatically summarizing daily work in Cursor AI and posting EOD status updates to Slack",
   "main": "dist/index.js",
   "bin": {
