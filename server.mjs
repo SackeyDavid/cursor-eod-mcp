@@ -140,17 +140,30 @@ app.get('/slack/oauth/callback', async (req, res) => {
             .cta-group { display: flex; flex-direction: column; gap: 1rem; align-items: center; }
             
             .btn { 
-                padding: 14px 28px; 
+                padding: 12px 24px; 
                 border-radius: 8px; 
                 font-weight: 600; 
                 text-decoration: none; 
                 transition: all 0.2s ease; 
                 display: flex; 
+                flex-direction: column;
                 align-items: center; 
                 justify-content: center;
-                gap: 8px;
+                gap: 4px;
                 width: 100%;
                 max-width: 300px;
+            }
+            
+            .btn-content {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+            }
+            
+            .btn-subtext {
+                font-size: 0.75rem;
+                font-weight: 400;
+                opacity: 0.9;
             }
             
             .btn-primary { 
@@ -193,7 +206,10 @@ app.get('/slack/oauth/callback', async (req, res) => {
 
               <div class="cta-group">
                   <a href="cursor://anysphere.cursor-deeplink/mcp/install?name=@techhalo/cursor-eod-mcp&config=eyJjb21tYW5kIjoibnB4IiwiYXJncyI6WyIteSIsIkB0ZWNoaGFsby9jdXJzb3ItZW9kLW1jcCJdLCJlbnYiOnsiU0xBQ0tfQk9UX1RPS0VOIjoiIiwiU0xBQ0tfVVNFUl9UT0tFTiI6IiIsIlNMQUNLX0RFRkFVTFRfQ0hBTk5FTCI6IiJ9fQ==" class="btn btn-primary">
-                      ⚡ One-Click Install in Cursor
+                      <span class="btn-content">
+                          ⚡ One-Click Install in Cursor
+                      </span>
+                      <span class="btn-subtext">Step 2: Paste tokens after install</span>
                   </a>
                   <a href="/" class="btn btn-secondary">Return to Home</a>
               </div>
