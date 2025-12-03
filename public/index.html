@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cursor EOD MCP - AI Status Updates for Slack</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="background-glow"></div>
+    
+    <nav>
+        <div class="container nav-container">
+            <div class="logo">Cursor EOD MCP</div>
+            <div class="nav-links">
+                <a href="#features">Features</a>
+                <a href="#how-it-works">How it Works</a>
+                <a href="#slack-tokens">Get Tokens</a>
+                <a href="https://github.com/SackeyDavid/cursor-eod-mcp" target="_blank" class="github-link">GitHub</a>
+            </div>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <div class="container">
+            <span class="badge">AI-Powered Productivity</span>
+            <h1>Automate Your Daily <br><span class="gradient-text">EOD Status Updates</span></h1>
+            <p class="subtitle">A powerful MCP server for Cursor and VS Code that summarizes your daily work and posts formatted updates directly to Slack.</p>
+            
+            <div class="cta-buttons">
+                <a href="cursor://anysphere.cursor-deeplink/mcp/install?name=@techhalo/cursor-eod-mcp&config=eyJjb21tYW5kIjoibnB4IiwiYXJncyI6WyIteSIsIkB0ZWNoaGFsby9jdXJzb3ItZW9kLW1jcCJdLCJlbnYiOnsiU0xBQ0tfQk9UX1RPS0VOIjoiIiwiU0xBQ0tfVVNFUl9UT0tFTiI6IiIsIlNMQUNLX0RFRkFVTFRfQ0hBTk5FTCI6IiJ9fQ==" class="btn btn-primary glow-effect">
+                    <span class="icon">⚡</span> One-Click Install in Cursor
+                </a>
+                <a href="/slack/oauth/start" class="btn btn-secondary">
+                    <span class="icon">💬</span> Add to Slack
+                </a>
+            </div>
+            
+            <div class="hero-links">
+                <a href="#slack-tokens" class="link-highlight">Get your Slack tokens guide ↓</a>
+            </div>
+        </div>
+    </header>
+
+    <section id="features" class="features">
+        <div class="container">
+            <div class="feature-grid">
+                <div class="card glass-card">
+                    <div class="card-icon">🤖</div>
+                    <h3>AI Summaries</h3>
+                    <p>Automatically reviews your daily coding sessions in Cursor to generate comprehensive bullet-point summaries of your work.</p>
+                </div>
+                <div class="card glass-card">
+                    <div class="card-icon">🚀</div>
+                    <h3>One-Command Post</h3>
+                    <p>Just type <code>eod_status</code> in Chat to format and send your update to your team's Slack channel instantly.</p>
+                </div>
+                <div class="card glass-card">
+                    <div class="card-icon">⚙️</div>
+                    <h3>Fully Configurable</h3>
+                    <p>Customize templates, set default channels, and manage multiple Slack workspaces with ease.</p>
+                </div>
+                <div class="card glass-card">
+                    <div class="card-icon">🔒</div>
+                    <h3>Secure & Private</h3>
+                    <p>Your tokens stay local. The MCP server runs on your machine and communicates directly with Slack.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="how-it-works" class="how-it-works">
+        <div class="container">
+            <h2>How It Works</h2>
+            <div class="steps-grid">
+                <div class="step-item">
+                    <div class="step-number">01</div>
+                    <h3>Install</h3>
+                    <p>Click the install button to add the MCP server to Cursor.</p>
+                </div>
+                <div class="step-item">
+                    <div class="step-number">02</div>
+                    <h3>Configure</h3>
+                    <p>Add your Slack tokens to the MCP configuration.</p>
+                </div>
+                <div class="step-item">
+                    <div class="step-number">03</div>
+                    <h3>Automate</h3>
+                    <p>Run <code>eod_status</code> and let AI handle the rest.</p>
+                </div>
+            </div>
+
+            <div class="config-preview">
+                <h3>~/.cursor/mcp.json Configuration</h3>
+                <pre><code class="language-json">{
+  "mcpServers": {
+    "@techhalo/cursor-eod-mcp": {
+      "command": "npx",
+      "args": ["-y", "@techhalo/cursor-eod-mcp"],
+      "env": {
+        "SLACK_BOT_TOKEN": "xoxb-your-bot-token",
+        "SLACK_USER_TOKEN": "xoxp-your-user-token-or-empty",
+        "SLACK_DEFAULT_CHANNEL": "halo"
+      }
+    }
+  }
+}</code></pre>
+            </div>
+        </div>
+    </section>
+
+    <section id="slack-tokens" class="slack-guide">
+        <div class="container">
+            <div class="card glass-card large-card">
+                <h2>How to Get Your Slack Tokens</h2>
+                <p class="guide-intro">To use the EOD MCP, you need a Bot Token (required) and optionally a User Token.</p>
+                
+                <div class="guide-steps">
+                    <div class="guide-step">
+                        <span class="step-bullet">1</span>
+                        <p>Go to <a href="https://api.slack.com/apps" target="_blank">api.slack.com/apps</a> and click <strong>Create New App</strong> → <strong>From scratch</strong>.</p>
+                    </div>
+                    <div class="guide-step">
+                        <span class="step-bullet">2</span>
+                        <p>Name it "EOD Bot" and select your workspace.</p>
+                    </div>
+                    <div class="guide-step">
+                        <span class="step-bullet">3</span>
+                        <p>In <strong>OAuth & Permissions</strong>, add these <strong>Bot Token Scopes</strong>:</p>
+                        <div class="tags">
+                            <span class="tag">chat:write</span>
+                            <span class="tag">channels:read</span>
+                            <span class="tag">groups:read</span>
+                        </div>
+                    </div>
+                    <div class="guide-step">
+                        <span class="step-bullet">4</span>
+                        <p>(Optional) Add <strong>User Token Scopes</strong> for posting as yourself:</p>
+                        <div class="tags">
+                            <span class="tag">chat:write</span>
+                        </div>
+                    </div>
+                    <div class="guide-step">
+                        <span class="step-bullet">5</span>
+                        <p>Scroll up and click <strong>Install to Workspace</strong>.</p>
+                    </div>
+                    <div class="guide-step">
+                        <span class="step-bullet">6</span>
+                        <p>Copy your tokens:</p>
+                        <ul class="token-list">
+                            <li><strong>Bot Token:</strong> Starts with <code>xoxb-...</code> (Required)</li>
+                            <li><strong>User Token:</strong> Starts with <code>xoxp-...</code> (Optional)</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="env-vars-box">
+                    <h4>Environment Variables for MCP</h4>
+                    <pre><code>SLACK_BOT_TOKEN: xoxb-your-bot-token
+SLACK_USER_TOKEN: xoxp-your-user-token-or-empty
+SLACK_DEFAULT_CHANNEL: halo</code></pre>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>Cursor EOD MCP &copy; 2025</p>
+            <p class="footer-note">Not affiliated with Slack or Cursor.</p>
+        </div>
+    </footer>
+</body>
+</html>

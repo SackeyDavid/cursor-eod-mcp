@@ -1,0 +1,35 @@
+services:
+  - type: web
+    name: cursor-eod-landing
+    runtime: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: NODE_VERSION
+        value: 20.9.0
+      - key: SLACK_CLIENT_ID
+        sync: false
+      - key: SLACK_CLIENT_SECRET
+        sync: false
+      - key: SLACK_REDIRECT_URI
+        sync: false
+      - key: DATABASE_URL
+        fromDatabase:
+          name: cursor-eod-db
+          property: connectionString
+
+databases:
+  - name: cursor-eod-db
+    plan: free
+    databaseName: cursor_eod
+    user: cursor_eod_user
+
+# Deployment Instructions:
+# 1. Connect this repo to Render.com
+# 2. Create a new Web Service using this render.yaml (Blueprints)
+# 3. In the Render dashboard, you will be prompted to provide values for:
+#    - SLACK_CLIENT_ID
+#    - SLACK_CLIENT_SECRET
+#    - SLACK_REDIRECT_URI (e.g., https://<your-service-name>.onrender.com/slack/oauth/callback)
+
