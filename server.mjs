@@ -133,7 +133,8 @@ app.get('/slack/oauth/callback', async (req, res) => {
             body { display: flex; justify-content: center; align-items: center; height: 100vh; flex-direction: column; }
             .card { max-width: 600px; padding: 2rem; background: rgba(255,255,255,0.1); border-radius: 16px; backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.2); text-align: center; }
             h1 { color: white; margin-bottom: 1rem; }
-            p { color: #ccc; margin-bottom: 2rem; }
+            p { color: #ccc; margin-bottom: 1.5rem; }
+            .warning-note { background: rgba(255, 165, 0, 0.15); border: 1px solid rgba(255, 165, 0, 0.3); padding: 1rem; border-radius: 8px; color: #ffcd85; margin-bottom: 2rem; font-size: 0.9rem; }
             .tokens { background: #111; padding: 1rem; border-radius: 8px; text-align: left; overflow-x: auto; font-family: monospace; margin-bottom: 2rem; color: #0f0; }
             .btn { display: inline-block; padding: 10px 20px; background: white; color: #00005C; text-decoration: none; border-radius: 6px; font-weight: bold; }
           </style>
@@ -143,6 +144,10 @@ app.get('/slack/oauth/callback', async (req, res) => {
               <h1>Slack Connected Successfully!</h1>
               <p>Your workspace has been authenticated. You can now use these tokens in your Cursor EOD MCP configuration.</p>
               
+              <div class="warning-note">
+                  <strong>⚠️ Important:</strong> Copy these tokens to a safe place now. You will need them later when installing the MCP server in Cursor.
+              </div>
+
               <div class="tokens">
                   SLACK_BOT_TOKEN = ${slackBotToken}<br>
                   SLACK_USER_TOKEN = ${slackUserToken}<br>
