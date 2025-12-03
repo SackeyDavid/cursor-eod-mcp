@@ -134,7 +134,7 @@ app.get('/slack/oauth/callback', async (req, res) => {
             .card { max-width: 600px; width: 90%; padding: 2rem; background: rgba(255,255,255,0.03); border-radius: 16px; backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); text-align: center; }
             h1 { color: white; margin-bottom: 1rem; font-size: 2rem; }
             p { color: #ccc; margin-bottom: 1.5rem; }
-            .warning-note { background: rgba(255, 165, 0, 0.15); border: 1px solid rgba(255, 165, 0, 0.3); padding: 1rem; border-radius: 8px; color: #ffcd85; margin-bottom: 2rem; font-size: 0.9rem; text-align: left; }
+            .warning-note { background: rgba(66, 153, 225, 0.15); border: 1px solid rgba(66, 153, 225, 0.3); padding: 1rem; border-radius: 8px; color: #90cdf4; margin-bottom: 2rem; font-size: 0.9rem; text-align: left; }
             .tokens { background: #111; padding: 1rem; border-radius: 8px; text-align: left; overflow-x: auto; font-family: monospace; margin-bottom: 2rem; color: #0f0; border: 1px solid rgba(255,255,255,0.1); }
             
             .cta-group { display: flex; flex-direction: column; gap: 1rem; align-items: center; }
@@ -182,7 +182,7 @@ app.get('/slack/oauth/callback', async (req, res) => {
               <p>Your workspace has been authenticated successfully.</p>
               
               <div class="warning-note">
-                  <strong>⚠️ Step 1 Complete:</strong> Copy these tokens now. You will need to paste them into your configuration after clicking the install button below.
+                  <strong>ℹ️ Step 1 Complete:</strong> Copy these tokens now. You will need to paste them into your configuration after clicking the install button below.
               </div>
 
               <div class="tokens">
@@ -193,7 +193,7 @@ app.get('/slack/oauth/callback', async (req, res) => {
 
               <div class="cta-group">
                   <a href="cursor://anysphere.cursor-deeplink/mcp/install?name=@techhalo/cursor-eod-mcp&config=eyJjb21tYW5kIjoibnB4IiwiYXJncyI6WyIteSIsIkB0ZWNoaGFsby9jdXJzb3ItZW9kLW1jcCJdLCJlbnYiOnsiU0xBQ0tfQk9UX1RPS0VOIjoiIiwiU0xBQ0tfVVNFUl9UT0tFTiI6IiIsIlNMQUNLX0RFRkFVTFRfQ0hBTk5FTCI6IiJ9fQ==" class="btn btn-primary">
-                      <span>⚡</span> One-Click Install in Cursor
+                      ⚡ One-Click Install in Cursor
                   </a>
                   <a href="/" class="btn btn-secondary">Return to Home</a>
               </div>
