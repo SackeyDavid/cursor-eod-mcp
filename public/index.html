@@ -119,7 +119,7 @@
                     <div class="example-card">
                         <h4>Configure Settings</h4>
                         <p>Save tokens/channel locally so you don't need env vars every time.</p>
-                        <pre><code>configure slack_token="xoxb-..." default_channel="halo"</code></pre>
+                        <pre><code>configure slack_token="xoxb-..." default_channel="channel"</code></pre>
                     </div>
                     <div class="example-card">
                         <h4>List Channels</h4>
@@ -128,13 +128,24 @@
                     </div>
                     <div class="example-card">
                         <h4>Set Default Channel</h4>
-                        <p>Set the target channel for your updates.</p>
-                        <pre><code>set_default_channel channel="frontend-team"</code></pre>
+                        <p>Set the default target channel for your updates.</p>
+                        <pre><code>set_default_channel channel="channel"</code></pre>
+                    </div>
+                    <div class="example-card">
+                        <h4>Preview Format</h4>
+                        <p>See how your message will look before sending.</p>
+                        <pre><code>preview_format</code></pre>
+                    </div>
+                    <div class="example-card">
+                        <h4>Update Template</h4>
+                        <p>Customize your message formatting.</p>
+                        <pre><code>update_format_template template="*EOD ({date})*\n\n{summary}"</code></pre>
                     </div>
                     <div class="example-card">
                         <h4>Send EOD Update</h4>
                         <p>Auto-generates summary from your Cursor session and posts to Slack.</p>
-                        <pre><code>eod_status summary="• Did X\n• Fixed Y"</code></pre>
+                        <pre><code>eod_status</code></pre>
+                        <p class="sub-note">Optional: <code>summary="..." pending="..." planTomorrow="..." channel="..."</code></p>
                     </div>
                 </div>
             </div>
