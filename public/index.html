@@ -113,48 +113,7 @@
 }</code></pre>
             </div>
 
-            <div class="usage-examples">
-                <h3>Handy Commands</h3>
-                <div class="example-grid">
-                    <div class="example-card">
-                        <h4>Configure Settings</h4>
-                        <p>Save tokens/channel locally so you don't need env vars every time.</p>
-                        <pre><code>configure slack_token="xoxb-..." default_channel="channel"</code></pre>
-                    </div>
-                    <div class="example-card">
-                        <h4>List Channels</h4>
-                        <p>See which channels your token has access to read.</p>
-                        <pre><code>list_channels</code></pre>
-                    </div>
-                    <div class="example-card">
-                        <h4>Set Default Channel</h4>
-                        <p>Set the default target channel for your updates.</p>
-                        <pre><code>set_default_channel channel="channel"</code></pre>
-                    </div>
-                    <div class="example-card">
-                        <h4>Preview Format</h4>
-                        <p>See how your message will look before sending.</p>
-                        <pre><code>preview_format</code></pre>
-                    </div>
-                    <div class="example-card">
-                        <h4>Update Template</h4>
-                        <p>Customize your message formatting.</p>
-                        <pre><code>update_format_template template="*EOD ({date})*\n\n{summary}"</code></pre>
-                    </div>
-                    <div class="example-card">
-                        <h4>Send EOD Update</h4>
-                        <p>Auto-generates summary from your Cursor session and posts to Slack.</p>
-                        <pre><code>eod_status</code></pre>
-                        <p class="sub-note">Optional: <code>summary="..." pending="..." planTomorrow="..." channel="..."</code></p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="slack-tokens" class="slack-guide">
-        <div class="container">
-            <div class="card glass-card large-card">
+            <div id="slack-tokens" class="card glass-card large-card" style="margin-top: 64px;">
                 <h2>How to Get Your Slack Tokens</h2>
                 <p class="guide-intro">To use the EOD MCP, you need a Bot Token (required) and optionally a User Token.</p>
                 
@@ -202,6 +161,43 @@
                     <pre><code>SLACK_BOT_TOKEN: xoxb-your-bot-token
 SLACK_USER_TOKEN: xoxp-your-user-token-or-empty
 SLACK_DEFAULT_CHANNEL: halo</code></pre>
+                </div>
+            </div>
+
+            <div class="usage-examples">
+                <h3>Handy Commands</h3>
+                <div class="example-grid">
+                    <div class="example-card">
+                        <h4>Configure Settings</h4>
+                        <p>Save tokens/channel locally so you don't need env vars every time.</p>
+                        <pre><code>configure slack_token="xoxb-..." default_channel="channel"</code></pre>
+                    </div>
+                    <div class="example-card">
+                        <h4>List Channels</h4>
+                        <p>See which channels your token has access to read.</p>
+                        <pre><code>list_channels</code></pre>
+                    </div>
+                    <div class="example-card">
+                        <h4>Set Default Channel</h4>
+                        <p>Set the default target channel for your updates.</p>
+                        <pre><code>set_default_channel channel="channel"</code></pre>
+                    </div>
+                    <div class="example-card">
+                        <h4>Preview Format</h4>
+                        <p>See how your message will look before sending.</p>
+                        <pre><code>preview_format</code></pre>
+                    </div>
+                    <div class="example-card">
+                        <h4>Update Template</h4>
+                        <p>Customize your message formatting.</p>
+                        <pre><code>update_format_template template="*EOD ({date})*\n\n{summary}"</code></pre>
+                    </div>
+                    <div class="example-card">
+                        <h4>Send EOD Update</h4>
+                        <p>Auto-generates summary from your Cursor session and posts to Slack.</p>
+                        <pre><code>eod_status</code></pre>
+                        <p class="sub-note">Optional: <code>summary="..." pending="..." planTomorrow="..." channel="..."</code></p>
+                    </div>
                 </div>
             </div>
         </div>
