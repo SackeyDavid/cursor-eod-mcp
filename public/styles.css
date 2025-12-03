@@ -131,14 +131,28 @@ h1 {
 }
 
 .btn {
-    padding: 14px 28px;
+    padding: 12px 24px;
     border-radius: 8px;
     font-weight: 600;
     text-decoration: none;
     transition: all 0.2s ease;
     display: flex;
+    flex-direction: column;
     align-items: center;
-    gap: 8px;
+    justify-content: center;
+    gap: 4px;
+    min-width: 200px;
+}
+
+.btn .icon {
+    font-size: 1.2rem;
+    margin-bottom: 2px;
+}
+
+.btn-subtext {
+    font-size: 0.75rem;
+    font-weight: 400;
+    opacity: 0.9;
 }
 
 .btn-primary {
@@ -165,20 +179,37 @@ h1 {
     border-color: white;
 }
 
+.btn-secondary.dimmed {
+    opacity: 0.7;
+}
+
+.btn-secondary.dimmed:hover {
+    opacity: 1;
+}
+
 .hero-links {
     margin-top: 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.link-note {
+    color: var(--text-muted);
+    font-size: 0.9rem;
 }
 
 .link-highlight {
-    color: var(--text-muted);
+    color: var(--primary);
     font-size: 0.9rem;
     text-decoration: none;
-    border-bottom: 1px dotted var(--text-muted);
+    border-bottom: 1px dotted var(--primary);
 }
 
 .link-highlight:hover {
-    color: var(--primary);
-    border-color: var(--primary);
+    color: var(--accent);
+    border-color: var(--accent);
 }
 
 /* Features Grid */
