@@ -318,6 +318,52 @@ code {
     color: #e2e8f0;
 }
 
+/* Usage Examples */
+.usage-examples {
+    max-width: 900px;
+    margin: 64px auto 0;
+}
+
+.usage-examples h3 {
+    text-align: center;
+    margin-bottom: 32px;
+    font-family: var(--font-mono);
+    font-size: 1rem;
+    color: var(--text-muted);
+}
+
+.example-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 24px;
+}
+
+.example-card {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 24px;
+}
+
+.example-card h4 {
+    margin-bottom: 8px;
+    color: var(--primary);
+    font-size: 1rem;
+}
+
+.example-card p {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    margin-bottom: 16px;
+}
+
+.example-card pre {
+    padding: 16px;
+    margin: 0;
+    background: rgba(0, 0, 0, 0.3);
+    border: none;
+}
+
 .env-vars-box {
     margin-top: 32px;
 }

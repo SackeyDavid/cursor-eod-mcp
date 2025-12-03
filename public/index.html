@@ -112,6 +112,32 @@
   }
 }</code></pre>
             </div>
+
+            <div class="usage-examples">
+                <h3>Handy Commands</h3>
+                <div class="example-grid">
+                    <div class="example-card">
+                        <h4>Configure Settings</h4>
+                        <p>Save tokens/channel locally so you don't need env vars every time.</p>
+                        <pre><code>configure slack_token="xoxb-..." default_channel="halo"</code></pre>
+                    </div>
+                    <div class="example-card">
+                        <h4>List Channels</h4>
+                        <p>See which channels your token has access to read.</p>
+                        <pre><code>list_channels</code></pre>
+                    </div>
+                    <div class="example-card">
+                        <h4>Set Default Channel</h4>
+                        <p>Set the target channel for your updates.</p>
+                        <pre><code>set_default_channel channel="frontend-team"</code></pre>
+                    </div>
+                    <div class="example-card">
+                        <h4>Send EOD Update</h4>
+                        <p>Auto-generates summary from your Cursor session and posts to Slack.</p>
+                        <pre><code>eod_status summary="• Did X\n• Fixed Y"</code></pre>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
