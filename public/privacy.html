@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Policy - Cursor EOD MCP</title>
+    <link rel="stylesheet" href="/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="background-glow"></div>
+    
+    <nav>
+        <div class="container nav-container">
+            <a href="/" style="text-decoration: none;">
+                <div class="logo">Cursor EOD MCP</div>
+            </a>
+            <div class="nav-links">
+                <a href="/">Home</a>
+                <a href="https://github.com/SackeyDavid/cursor-eod-mcp" target="_blank" class="github-link">GitHub</a>
+            </div>
+        </div>
+    </nav>
+
+    <section class="features" style="padding-top: 40px;">
+        <div class="container">
+            <div class="card glass-card large-card">
+                <h1>Privacy Policy</h1>
+                <p class="subtitle" style="margin-bottom: 40px;">Last updated: December 5, 2025</p>
+
+                <div style="text-align: left; color: var(--text-main);">
+                    <h3 style="color: var(--primary); margin-bottom: 16px;">1. Overview</h3>
+                    <p style="margin-bottom: 24px; color: var(--text-muted);">
+                        Cursor EOD MCP ("the Service") is a local-first Model Context Protocol server that runs on your machine. We respect your privacy and handle your data with transparency.
+                    </p>
+
+                    <h3 style="color: var(--primary); margin-bottom: 16px;">2. Data Collection & Usage</h3>
+                    <p style="margin-bottom: 16px; color: var(--text-muted);">
+                        <strong>Slack Tokens:</strong> When you use our OAuth flow to connect Slack, we temporarily receive an authentication token. This token is displayed to you immediately so you can configure your local MCP server.
+                    </p>
+                    <p style="margin-bottom: 24px; color: var(--text-muted);">
+                        <strong>Local Storage:</strong> Once configured, your Slack tokens are stored locally on your machine in the MCP configuration file (`~/.cursor/mcp.json`). We do not maintain a central database of user tokens or user data after the initial authentication handshake.
+                    </p>
+
+                    <h3 style="color: var(--primary); margin-bottom: 16px;">3. Data Processing</h3>
+                    <p style="margin-bottom: 24px; color: var(--text-muted);">
+                        All AI processing (summarizing your work) happens locally within your Cursor environment or via the API providers you have configured in Cursor. We do not see, store, or process your code or summaries on our servers. The MCP server simply acts as a bridge between your local environment and Slack.
+                    </p>
+
+                    <h3 style="color: var(--primary); margin-bottom: 16px;">4. Third-Party Services</h3>
+                    <p style="margin-bottom: 24px; color: var(--text-muted);">
+                        The Service interacts with Slack's API to post status updates on your behalf. Please refer to <a href="https://slack.com/trust/privacy/privacy-policy" target="_blank" style="color: var(--primary);">Slack's Privacy Policy</a> for information on how they handle your data.
+                    </p>
+
+                    <h3 style="color: var(--primary); margin-bottom: 16px;">5. Contact Us</h3>
+                    <p style="color: var(--text-muted);">
+                        If you have any questions about this Privacy Policy, please contact us via our <a href="/support" style="color: var(--primary);">Support page</a>.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>Cursor EOD MCP &copy; 2025</p>
+            <p class="footer-note">Not affiliated with Slack or Cursor.</p>
+        </div>
+    </footer>
+</body>
+</html>
+

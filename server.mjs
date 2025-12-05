@@ -49,6 +49,15 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
+// 3. Support & Privacy Pages
+app.get('/privacy', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'privacy.html'));
+});
+
+app.get('/support', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'support.html'));
+});
+
 // 4. Slack OAuth Start
 app.get('/slack/oauth/start', (req, res) => {
   const state = req.query.state || 'demo-user';
